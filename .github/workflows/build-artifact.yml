@@ -52,7 +52,8 @@ jobs:
           name: ${{ matrix.output }}
           path: ${{ matrix.output }}
 
-      - name: Calculate SHA256
+      - name: Calculate SHA256 (Linux and macOS)
+        if: matrix.os != 'windows-latest'
         run: |
           if [ "${{ matrix.os }}" == "macos-latest" ]; then
             shasum -a 256 ${{ matrix.output }}
@@ -88,9 +89,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Print SHA256 Checksums
+      - name: Print SHA256 Checksums for Linux
         run: |
           echo "SHA256 for Linux:"
           sha256sum artifacts/scout-cli-linux/scout-cli-linux
+
+      - name: Print SHA256 Checksums for macOS
+        run: |
           echo "SHA256 for macOS:"
           shasum -a 256 artifacts/scout-cli-macos/scout-cli-macos
