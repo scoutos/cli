@@ -29,7 +29,7 @@
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-2. Run the following commands to download and install the CLI:
+2. Run the following commands to download and install the ScoutOS CLI:
 
 ```sh
 brew tap scoutos/scoutos-cli
@@ -46,7 +46,7 @@ brew install scoutos-cli
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-2. Run the following commands to download and install the CLI:
+2. Run the following commands to download and install the ScoutOS CLI:
 
 ```sh
 brew tap scoutos/scoutos-cli
