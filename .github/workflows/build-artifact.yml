@@ -54,9 +54,9 @@ jobs:
 
       - name: Calculate SHA256
         run: |
-          if [[ "${{ matrix.os }}" == "macos-latest" ]]; then
+          if [ "${{ matrix.os }}" == "macos-latest" ]; then
             shasum -a 256 ${{ matrix.output }}
-          elif [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
+          elif [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
             sha256sum ${{ matrix.output }}
           fi
 
