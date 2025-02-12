@@ -23,23 +23,37 @@
 
 #### macOS
 
-1. Run the following command to download and install the CLI:
+1. If you don't have Homebrew installed, install it from [Homebrew](https://brew.sh/):
 
 ```sh
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/scoutos/homebrew-scoutos-cli/main/install.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-2. Now you should be able to use `scout` from your system! Try running `scout --help` to see if it works.
+2. Run the following commands to download and install the CLI:
+
+```sh
+brew tap scoutos/scoutos-cli
+brew install scoutos-cli
+```
+
+3. Now you should be able to use `scout` from your system! Try running `scout --help` to see if it works.
 
 #### Linux
 
-1. Run the following command to download and install the CLI:
+1. If you don't have Homebrew installed, install it from [Homebrew](https://brew.sh/):
 
 ```sh
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/scoutos/homebrew-scoutos-cli/main/install.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-2. Now you should be able to use `scout` from your system! Try running `scout --help` to see if it works.
+2. Run the following commands to download and install the CLI:
+
+```sh
+brew tap scoutos/scoutos-cli
+brew install scoutos-cli
+```
+
+3. Now you should be able to use `scout` from your system! Try running `scout --help` to see if it works.
 
 #### Windows
 
