@@ -52,6 +52,9 @@ jobs:
           name: ${{ matrix.output }}
           path: ${{ matrix.output }}
 
+      - name: Calculate SHA256
+        run: sha256sum ${{ matrix.output }}
+
   release:
     name: Release Artifact
     needs: build
@@ -79,3 +82,12 @@ jobs:
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Print SHA256 Checksums
+        run: |
+          echo "SHA256 for Linux:"
+          sha256sum artifacts/scout-cli-linux/scout-cli-linux
+          echo "SHA256 for Windows:"
+          sha256sum artifacts/scout-cli-windows.exe/scout-cli-windows.exe
+          echo "SHA256 for macOS:"
+          sha256sum artifacts/scout-cli-macos/scout-cli-macos
