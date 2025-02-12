@@ -56,7 +56,7 @@ jobs:
         run: |
           if [[ "${{ matrix.os }}" == "macos-latest" ]]; then
             shasum -a 256 ${{ matrix.output }}
-          else
+          elif [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
             sha256sum ${{ matrix.output }}
           fi
 
@@ -92,7 +92,5 @@ jobs:
         run: |
           echo "SHA256 for Linux:"
           sha256sum artifacts/scout-cli-linux/scout-cli-linux
-          echo "SHA256 for Windows:"
-          sha256sum artifacts/scout-cli-windows.exe/scout-cli-windows.exe
           echo "SHA256 for macOS:"
           shasum -a 256 artifacts/scout-cli-macos/scout-cli-macos
