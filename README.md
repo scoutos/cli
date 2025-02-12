@@ -5,7 +5,7 @@
 
 ## Table of Contents
 
-- [Using `scout-cli`](#using-scout-cli)
+- [Getting Started](#getting-started)
   - [Setup](#setup)
     - [macOS](#macos)
     - [Linux](#linux)
@@ -17,59 +17,29 @@
 - [AI Workflow Project Structure](#ai-workflow-project-structure)
 - [Local Development](#local-development)
 
-## Using `scout-cli`
+## Getting Started
 
 ### Setup
 
 #### macOS
 
-1. Download the macOS executable from the [Latest Release](https://github.com/scoutos/scout-cli/releases/tag/latest/scout-cli-macos).
-
-2. Move and authorize the downloaded file:
+1. Run the following command to download and install the CLI:
 
 ```sh
-# Move & rename executable
-sudo mv scout-cli-macos /usr/local/bin/scout
-
-# Make the executable runnable
-sudo chmod +x /usr/local/bin/scout
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/scoutos/homebrew-scoutos-cli/main/install.sh)"
 ```
 
-3. Now you should be able to use `scout` from your system! Try running `scout --help` to see if it works.
-
-4. If you want to remove the CLI, you can run:
-
-```sh
-sudo rm /usr/local/bin/scout
-```
-
-5. **Note**: You may have to grant the CLI permissions to write, read, and delete on your system.
-   - `sudo chmod +x /usr/local/bin/scout`
+2. Now you should be able to use `scout` from your system! Try running `scout --help` to see if it works.
 
 #### Linux
 
-1. Download the Linux executable from the [Latest Release](https://github.com/scoutos/scout-cli/releases/tag/latest/scout-cli-linux).
-
-2. Move and authorize the downloaded file:
+1. Run the following command to download and install the CLI:
 
 ```sh
-# Move & rename executable
-sudo mv scout-cli /usr/local/bin/scout
-
-# Make the executable runnable
-sudo chmod +x /usr/local/bin/scout
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/scoutos/homebrew-scoutos-cli/main/install.sh)"
 ```
 
-3. Now you should be able to use `scout` from your system! Try running `scout --help` to see if it works.
-
-4. If you want to remove the CLI, you can run:
-
-```sh
-sudo rm /usr/local/bin/scout
-```
-
-5. **Note**: You may have to grant the CLI permissions to write, read, and delete on your system.
-   - `sudo chmod +x /usr/local/bin/scout`
+2. Now you should be able to use `scout` from your system! Try running `scout --help` to see if it works.
 
 #### Windows
 
