@@ -23,37 +23,41 @@ The ScoutOS CLI allows one to interact with and update Scout workflows via
 
 #### macOS
 
-1. If you don't have Homebrew installed, install it from [Homebrew](https://brew.sh/):
+1. You can install the ScoutOS CLI using one of the following methods:
 
-```sh
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
+   - **Automatic Installation**:
 
-2. Run the following commands to download and install the ScoutOS CLI:
+   ```sh
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/scoutos/homebrew-scoutos-cli/main/install.sh)"
+   ```
 
-```sh
-brew tap scoutos/scoutos-cli
-brew install scoutos-cli
-```
+   - **Manual Installation**:
 
-3. Now you should be able to use `scout` from your system! Try running `scout --help` to see if it works.
+   ```sh
+   brew tap scoutos/scoutos-cli
+   brew install scoutos-cli
+   ```
+
+2. Now you should be able to use `scout` from your system! Try running `scout --help` to see if it works.
 
 #### Linux
 
-1. If you don't have Homebrew installed, install it from [Homebrew](https://brew.sh/):
+1. You can install the ScoutOS CLI using one of the following methods:
 
-```sh
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
+   - **Automatic Installation**:
 
-2. Run the following commands to download and install the ScoutOS CLI:
+   ```sh
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/scoutos/homebrew-scoutos-cli/main/install.sh)"
+   ```
 
-```sh
-brew tap scoutos/scoutos-cli
-brew install scoutos-cli
-```
+   - **Manual Installation**:
 
-3. Now you should be able to use `scout` from your system! Try running `scout --help` to see if it works.
+   ```sh
+   brew tap scoutos/scoutos-cli
+   brew install scoutos-cli
+   ```
+
+2. Now you should be able to use `scout` from your system! Try running `scout --help` to see if it works.
 
 #### Windows
 
