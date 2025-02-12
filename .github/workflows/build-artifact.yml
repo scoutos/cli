@@ -53,7 +53,12 @@ jobs:
           path: ${{ matrix.output }}
 
       - name: Calculate SHA256
-        run: sha256sum ${{ matrix.output }}
+        run: |
+          if [[ "${{ matrix.os }}" == "macos-latest" ]]; then
+            shasum -a 256 ${{ matrix.output }}
+          else
+            sha256sum ${{ matrix.output }}
+          fi
 
   release:
     name: Release Artifact
@@ -90,4 +95,4 @@ jobs:
           echo "SHA256 for Windows:"
           sha256sum artifacts/scout-cli-windows.exe/scout-cli-windows.exe
           echo "SHA256 for macOS:"
-          sha256sum artifacts/scout-cli-macos/scout-cli-macos
+          shasum -a 256 artifacts/scout-cli-macos/scout-cli-macos
