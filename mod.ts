@@ -23,6 +23,7 @@ import { slugify } from 'https://deno.land/x/slugify/mod.ts'
 import { Table } from 'https://deno.land/x/cliffy@v0.25.7/table/mod.ts'
 
 const BASE_URL = 'https://api-prod.scoutos.com'
+// const BASE_URL = 'http://localhost:8000'
 const scoutosVersion = '0.8.4'
 
 export const config: {
@@ -124,13 +125,15 @@ async function executeEphemeralWorkflow(
       inputsJson = await Deno.readTextFile(defaultInputsPath)
     }
 
-    const client = new ScoutClient({ apiKey: apiKey })
+    const client = new ScoutClient({ apiKey: apiKey, environment: BASE_URL })
     console.log(bold('Inputs JSON:'), inputsJson)
+
+    
 
     const startTime = performance.now()
     const result: any = await client.workflows.runWithConfig({
       inputs: JSON.parse(inputsJson),
-      workflow_config: configJson as any,
+      workflow_config: configJson.workflow_config as any,
     })
     const endTime = performance.now()
     const latency = endTime - startTime
@@ -140,8 +143,8 @@ async function executeEphemeralWorkflow(
 
     let parsedResult = result
     try {
-      const x = (await import(metaPath)).default
-      const { _parse_output } = x
+      const metaModule = await import(metaPath)
+      const { _parse_output } = metaModule.default
       if (typeof _parse_output === 'function') {
         parsedResult = _parse_output(result)
       }
@@ -503,13 +506,13 @@ const initCommand: CommandType = new Command()
       Deno.exit(1)
     }
     try {
-      const { slugifiedTemplateName } = await scaffoldProject(projectName)
+      const { slugifiedTemplateName, slugifiedProjectName } = await scaffoldProject(projectName)
 
       console.log(bold(cyan(`\nNext steps:`)))
       console.log(
         bold(
           `  1. ${
-            cyan(`cd ${projectName}`)
+            cyan(`cd ${slugifiedProjectName}`)
           } - Navigate to your new project directory`,
         ),
       )
