@@ -128,8 +128,6 @@ async function executeEphemeralWorkflow(
     const client = new ScoutClient({ apiKey: apiKey, environment: BASE_URL })
     console.log(bold('Inputs JSON:'), inputsJson)
 
-    
-
     const startTime = performance.now()
     const result: any = await client.workflows.runWithConfig({
       inputs: JSON.parse(inputsJson),
@@ -506,7 +504,8 @@ const initCommand: CommandType = new Command()
       Deno.exit(1)
     }
     try {
-      const { slugifiedTemplateName, slugifiedProjectName } = await scaffoldProject(projectName)
+      const { slugifiedTemplateName, slugifiedProjectName } =
+        await scaffoldProject(projectName)
 
       console.log(bold(cyan(`\nNext steps:`)))
       console.log(
