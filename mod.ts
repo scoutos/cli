@@ -309,7 +309,6 @@ async function deployWorkflow(
     } else {
       console.error(bold(red('Failed to deploy workflow:')), error)
     }
-    Deno.exit(1)
   }
 }
 
