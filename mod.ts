@@ -291,23 +291,30 @@ async function deployWorkflow(
       console.log(bold('Response status text:'), error.body)
     }
     if (error.statusCode === 409) {
-      console.log(bold(yellow('Workflow Exists, Creating New Revision...')))
-      const response: Scout.SrcHandlersCreateWorkflowRevisionResponse =
-        await client.workflows.createRevision({
-          workflow_key: workflowKey,
-          body: workflowConfig,
-        } as Scout.WorkflowsCreateRevisionRequest)
-      const workflowId = response?.data?.workflow_id
-      const urlToWorkflow = `https://studio.scoutos.com/workflows/${workflowId}`
-      console.log(
-        bold(
-          green(
-            `Workflow revision created successfully. You can view the workflow at ${urlToWorkflow}`,
+      try {
+        console.log(bold(yellow('Workflow Exists, Creating New Revision...')))
+        const response: Scout.SrcHandlersCreateWorkflowRevisionResponse =
+          await client.workflows.createRevision({
+            workflow_key: workflowKey,
+            body: workflowConfig,
+          } as Scout.WorkflowsCreateRevisionRequest)
+        const workflowId = response?.data?.workflow_id
+        const urlToWorkflow =
+          `https://studio.scoutos.com/workflows/${workflowId}`
+        console.log(
+          bold(
+            green(
+              `Workflow revision created successfully. You can view the workflow at ${urlToWorkflow}`,
+            ),
           ),
-        ),
-      )
+        )
+      } catch (error: any) {
+        console.error(bold(red('Failed to deploy workflow:')), error)
+        Deno.exit(1)
+      }
     } else {
       console.error(bold(red('Failed to deploy workflow:')), error)
+      Deno.exit(1)
     }
   }
 }
