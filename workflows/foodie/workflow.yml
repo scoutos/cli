@@ -26,7 +26,7 @@ workflow_config:
         temperature: 0.7
         prompt_items:
           - role: user
-            content: 'Where can I get food in {{inputs.user_message}}?'
+            content: 'Where can I get food in {{inputs.user_message}}??????'
           - role: assistant
             content: 'You should respond with a list of restaurants in the area. Each restaurant should have a name, address, and rating.'
       dependencies:

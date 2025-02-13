@@ -200,7 +200,7 @@ async function executeWorkflow(
   try {
     console.log(bold(green('Executing workflow with ID:')), workflowId)
 
-    const client = new ScoutClient({ apiKey: apiKey, environment: BASE_URL })
+    const client = new ScoutClient({ apiKey: apiKey, environment: BASE_URL,  })
     console.log(bold('Inputs JSON:'), JSON.stringify(inputs))
 
     // const startTime = performance.now()
@@ -253,7 +253,7 @@ async function deployWorkflow(
   apiKey: string,
 ): Promise<void> {
   console.log(bold(green('Deploying workflow...')))
-  const client = new ScoutClient({ apiKey: apiKey })
+  const client = new ScoutClient({ apiKey: apiKey,  environment: BASE_URL })
   const configData = await Deno.readTextFile(configPath)
   const parsedConfig = parse(configData) as WorkflowConfig
   const workflowConfig = parsedConfig.workflow_config
@@ -284,10 +284,10 @@ async function deployWorkflow(
       ),
     )
   } catch (error: any) {
-    if (error?.statusCode) {
+    if (error?.statusCode && error.statusCode != 409) {
       console.log(bold('Response status:'), error.statusCode)
     }
-    if (error?.body) {
+    if (error?.body && error.statusCode != 409) {
       console.log(bold('Response status text:'), error.body)
     }
     if (error.statusCode === 409) {
