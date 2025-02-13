@@ -21,6 +21,8 @@ import {
 import { Select } from 'https://deno.land/x/cliffy@v0.25.7/prompt/mod.ts'
 import { slugify } from 'https://deno.land/x/slugify/mod.ts'
 import { Table } from 'https://deno.land/x/cliffy@v0.25.7/table/mod.ts'
+import { monitorSubreddits } from './clients/reddit.ts'
+import { z } from 'https://deno.land/x/zod@v3.11.6/mod.ts'
 
 const BASE_URL = 'https://api-prod.scoutos.com'
 // const BASE_URL = 'http://localhost:8000'
@@ -184,6 +186,56 @@ async function executeEphemeralWorkflow(
     console.dir(parsedResult, { depth: null, colors: true })
 
     console.log(bold(green('1/1 workflows run successfully')))
+  } catch (error) {
+    console.error(bold(red('Failed to execute workflow:')), error)
+    Deno.exit(1)
+  }
+}
+
+async function executeWorkflow(
+  inputs: Record<string, unknown>,
+  apiKey: string,
+  workflowId: string,
+): Promise<void> {
+  try {
+    console.log(bold(green('Executing workflow with ID:')), workflowId)
+
+    const client = new ScoutClient({ apiKey: apiKey, environment: BASE_URL })
+    console.log(bold('Inputs JSON:'), JSON.stringify(inputs))
+
+    // const startTime = performance.now()
+    const result: any = await client.workflows.run(workflowId, {
+      inputs,
+    })
+    // const endTime = performance.now()
+    return result
+    // const latency = endTime - startTime
+
+    console.log(bold(green('Workflow executed successfully:')))
+    console.log(bold('='.repeat(50)))
+
+    // Display metrics
+    // console.log(bold(cyan('Metrics:')))
+    // const status = result?.run?.stop_reason || 'N/A'
+    // const sessionId = result?.run?.session_id || 'N/A'
+    // const organizationId = result?.run?.state?.__exp_global?.organization?.id ||
+    //   'N/A'
+    // new Table()
+    //   .header([bold('Metric'), bold('Value')])
+    //   .body([
+    //     [bold('Latency w/ Network (ms)'), latency.toFixed(2)],
+    //     [bold('Status'), status],
+    //     [bold('Session ID'), sessionId],
+    //     [bold('Organization ID'), organizationId],
+    //   ])
+    //   .border(true)
+    //   .render()
+
+    // console.log(bold('='.repeat(50)))
+    // console.log(bold(cyan('Output:')))
+    // console.dir(result, { depth: null, colors: true })
+
+    // console.log(bold(green('1/1 workflows run successfully')))
   } catch (error) {
     console.error(bold(red('Failed to execute workflow:')), error)
     Deno.exit(1)
@@ -580,6 +632,87 @@ const workflowsCommand: CommandType = new Command()
   .command('deploy', deployCommand)
   .command('get', getCommand)
 
+const ArgsSchema = z.object({
+  subreddits: z.array(z.string()),
+  interval: z.number().min(1000),
+  callback: z.function().args(z.any()).returns(z.promise(z.void())),
+  limit: z.number().min(1).max(100).default(5),
+  sort: z.enum(['new', 'hot', 'top']).default('new'),
+})
+
+const listenCommand: CommandType = new Command()
+  .description('Listen to subreddits')
+  .option(
+    '-s, --subreddits <subreddits:string>',
+    'Comma-separated list of subreddits to monitor',
+  )
+  .option(
+    '-i, --interval <interval:number>',
+    'Interval in seconds to check the subreddits',
+    { default: 30000 },
+  )
+  .option(
+    '-l, --limit <limit:number>',
+    'Number of posts to fetch per subreddit',
+    { default: 20 },
+  )
+  .option('--sort <sort:string>', 'Sort order of posts (new, hot, top)', {
+    default: 'new',
+  })
+  .option(
+    '--workflow_id <workflow_id:string>',
+    'ID of the workflow to execute for each post',
+  )
+  // @ts-ignore
+  .action(async ({ subreddits, interval, limit, sort, workflow_id }) => {
+    let apiKey = await getStoredApiKey()
+    if (!apiKey) {
+      console.log(
+        bold(
+          red(
+            'API key is required. Please link your Scout account by running `scout link`',
+          ),
+        ),
+      )
+      Deno.exit(1)
+    }
+
+    if (!subreddits) {
+      console.error(bold(red('Subreddits are required')))
+      Deno.exit(1)
+    }
+    if (!workflow_id) {
+      console.error(bold(red('Workflow ID is required')))
+      Deno.exit(1)
+    }
+
+    const subredditList = subreddits.split(',').map((s: string) => s.trim())
+    const args = ArgsSchema.parse({
+      subreddits: subredditList,
+      interval,
+      limit,
+      sort,
+      callback: async (post) => {
+        console.log(
+          `New post in ${post.subreddit}: ${post.title} by ${post.author}`,
+        )
+        try {
+          await executeWorkflow({ post }, apiKey, workflow_id)
+        } catch (error) {
+          console.error(
+            bold(red(`Failed to execute workflow for post: ${post.title}`)),
+            error,
+          )
+        }
+      },
+    })
+    await monitorSubreddits(args)
+  })
+
+const redditCommand: CommandType = new Command()
+  .description('Manage Reddit interactions')
+  .command('listen', listenCommand)
+
 export const scoutCli: CommandType = new Command()
   .name('scout')
   .version(scoutosVersion)
@@ -595,6 +728,7 @@ export const scoutCli: CommandType = new Command()
   .command('login', loginCommand)
   .command('init', initCommand)
   .command('link', linkCommand)
+  .command('reddit', redditCommand)
 
 if (import.meta.main) {
   await scoutCli.parse(Deno.args)
