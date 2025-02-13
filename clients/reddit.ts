@@ -38,7 +38,7 @@ export async function monitorSubreddits(args: Args) {
   // Validate the arguments
   const { subreddits, interval, callback, limit, sort } = ArgsSchema.parse(args)
 
-const seenPostIds = new Set<string>()
+  const seenPostIds = new Set<string>()
 
   async function checkSubreddits() {
     for (const subreddit of subreddits) {
