@@ -205,6 +205,7 @@ async function executeWorkflow(
 
     // const startTime = performance.now()
     const result: any = await client.workflows.run(workflowId, {
+      // @ts-ignore
       inputs,
     })
     // const endTime = performance.now()
@@ -692,7 +693,7 @@ const listenCommand: CommandType = new Command()
       interval,
       limit,
       sort,
-      callback: async (post) => {
+      callback: async (post: Record<any, any>) => {
         console.log(
           `New post in ${post.subreddit}: ${post.title} by ${post.author}`,
         )
