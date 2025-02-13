@@ -25,6 +25,7 @@ async function fetchNewPosts(subreddit: string, limit: number, sort: string) {
     }
     const data = await resp.json()
     const children = data?.data?.children ?? []
+    // deno-lint-ignore no-explicit-any
     return children.map((child: any) => child.data)
   } catch (error) {
     console.error(`Error fetching from ${url}:`, error)
