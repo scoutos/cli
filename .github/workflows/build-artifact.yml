@@ -46,6 +46,10 @@ jobs:
         env:
           DENO_DIR: ./temp/deno-dir
 
+      - name: Set executable permissions
+        if: runner.os != 'Windows'
+        run: chmod +x ${{ matrix.output }}
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
